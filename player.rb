@@ -6,11 +6,13 @@ YELLOW = "\e[33m"
 RESET = "\e[0m"
 
 class Player
-    Position = Struct.new(:position_x, :position_y)
+    Position = Struct.new(:row, :col)
     
     def initialize
-        @position = Position.new(0, 0)
+        @position = Position.new(1, 1)
         @id = $global_id
+        @fov = 1
+
         $global_id += 1
     end
 
@@ -22,8 +24,12 @@ class Player
         @id
     end
 
+    def get_fov
+        @fov
+    end
+
     def to_s
-        "#{GREEN}|P|#{RESET}"
+        "#{GREEN}P#{RESET}"
     end
 
     def process_action(action)
@@ -33,21 +39,21 @@ class Player
     end
 
     def move(direction)
-        new_position = Position.new(@position.position_x, @position.position_y);
+        new_position = Position.new(@position.row, @position.col);
 
         if direction == "d"
-            new_position.position_x = @position.position_x + 1
+            new_position.col = @position.col + 1
         elsif direction == "a"
-            new_position.position_x = @position.position_x - 1
+            new_position.col = @position.col - 1
         elsif direction == "s"
-            new_position.position_y = @position.position_y + 1
+            new_position.row = @position.row + 1
         elsif direction == "w"
-            new_position.position_y = @position.position_y - 1
+            new_position.row = @position.row - 1
         end
 
         @position = new_position if (
-            (new_position.position_x < 10 && new_position.position_x >= 0) && 
-            (new_position.position_y < 10 && new_position.position_y >= 0)
+            (new_position.row < 10 && new_position.row >= 0) && 
+            (new_position.col < 10 && new_position.col >= 0)
         )
     end
 end
