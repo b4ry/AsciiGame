@@ -1,3 +1,5 @@
+require_relative "gameObject.rb"
+
 $global_id = 0
 
 RED = "\e[31m"
@@ -5,12 +7,12 @@ GREEN = "\e[32m"
 YELLOW = "\e[33m"
 RESET = "\e[0m"
 
-class Player
+class Player < GameObject
     Position = Struct.new(:row, :col)
     
     def initialize
+        super()
         @position = Position.new(1, 1)
-        @id = $global_id
         @fov = 1
 
         $global_id += 1
@@ -18,10 +20,6 @@ class Player
 
     def get_position
         @position
-    end
-
-    def get_id
-        @id
     end
 
     def get_fov
