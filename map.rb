@@ -1,5 +1,5 @@
 class Map
-    def initialize()        
+    def initialize(game_objects)        
         begin
             puts("Provide map width (min 3): ")
             @columns = gets.to_i
@@ -11,7 +11,7 @@ class Map
         end while @rows < 3
 
         @map = Array.new(@rows) { Array.new(@columns) }
-        @map_objects = {}
+        @game_objects = game_objects
     end
 
     def draw_map(current_object)
@@ -54,14 +54,10 @@ class Map
     end
 
     def place_objects
-        @map_objects.each do |key, value|
+        @game_objects.each do |key, value|
             position = value.get_position
             @map[position.row][position.col] = value.to_s
         end
-    end
-
-    def add_object(obj)
-        @map_objects[obj.get_id] = obj
     end
 
     def clear_screen
