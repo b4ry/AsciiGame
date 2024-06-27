@@ -51,19 +51,6 @@ class Map
     
     def reset_map
         @map = Array.new(@rows) { Array.new(@columns, ".") }
-
-        last_row_index = @rows-1
-        last_col_index = @columns-1
-
-        for x in 0..last_row_index do
-            @map[x][0] = "|"
-            @map[x][last_col_index] = "|"
-        end
-
-        for y in 1..last_col_index-1 do
-            @map[0][y] = "-"
-            @map[last_row_index][y] = "-"
-        end
     end
 
     def place_objects

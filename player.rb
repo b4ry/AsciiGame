@@ -1,7 +1,5 @@
 require_relative "gameObject.rb"
 
-$global_id = 0
-
 RED = "\e[31m"
 GREEN = "\e[32m"
 YELLOW = "\e[33m"
@@ -14,8 +12,6 @@ class Player < GameObject
         super()
         @position = Position.new(1, 1)
         @fov = 1
-
-        $global_id += 1
     end
 
     def get_position
