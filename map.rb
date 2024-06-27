@@ -84,4 +84,12 @@ class Map
           print "\e[2J\e[f"  # Unix-like
         end
     end
+
+    def get_width
+        @columns
+    end
+
+    def get_height
+        @rows
+    end
 end

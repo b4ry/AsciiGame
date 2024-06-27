@@ -38,7 +38,7 @@ class Player
         end
     end
 
-    def move(direction)
+    def move(direction, map_width, map_height)
         new_position = Position.new(@position.row, @position.col);
 
         if direction == "d"
@@ -52,8 +52,8 @@ class Player
         end
 
         @position = new_position if (
-            (new_position.row < 10 && new_position.row >= 0) && 
-            (new_position.col < 10 && new_position.col >= 0)
+            (new_position.row < map_height && new_position.row >= 0) && 
+            (new_position.col < map_width && new_position.col >= 0)
         )
     end
 end
