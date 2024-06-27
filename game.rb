@@ -29,20 +29,20 @@ if __FILE__ == $0
 
     # ADD VERTICAL WALLS
     for x in 0..map_height-1 do
-        verticalWall1 = Wall.new(x, 0, "vertical")
-        game.add_object(verticalWall1)
+        verticalWallLeft = Wall.new(x, 0, "vertical")
+        game.add_object(verticalWallLeft)
 
-        verticalWall2 = Wall.new(x, map_width-1, "vertical")
-        game.add_object(verticalWall2)
+        verticalWallRight = Wall.new(x, map_width-1, "vertical")
+        game.add_object(verticalWallRight)
     end
 
     # ADD HORIZONTAL WALLS
     for y in 1..map_width-2 do
-        horizontalWall1 = Wall.new(0, y, "horizontal")
-        game.add_object(horizontalWall1)
+        horizontalWallUp = Wall.new(0, y, "horizontal")
+        game.add_object(horizontalWallUp)
 
-        horizontalWall2 = Wall.new(map_height-1, y, "horizontal")
-        game.add_object(horizontalWall2)
+        horizontalWallDown = Wall.new(map_height-1, y, "horizontal")
+        game.add_object(horizontalWallDown)
     end
     
     map.draw_map(player)
