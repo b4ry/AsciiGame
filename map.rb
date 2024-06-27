@@ -50,7 +50,7 @@ class Map
     end
     
     def reset_map
-        @map = Array.new(@rows) { Array.new(@columns, ".") }
+        @map = Array.new(@rows) { Array.new(@columns, " .") }
     end
 
     def place_objects

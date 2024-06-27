@@ -6,7 +6,7 @@ class Wall < GameObject
     def initialize(x, y, direction)
         super()
         @position = Position.new(x, y)
-        @shape = direction == "vertical" ? "|" : "-"
+        @shape = direction == "vertical" ? " |" : " -"
     end
 
     def get_position
