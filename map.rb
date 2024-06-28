@@ -13,6 +13,14 @@ class Map
         @map = Array.new(@rows) { Array.new(@columns) }
         @game_objects = game_objects
     end
+    
+    def get_width
+        return @columns
+    end
+
+    def get_height
+        return @rows
+    end
 
     def draw_map(current_object)
         clear_screen
@@ -23,7 +31,8 @@ class Map
         draw_object_vision_map(current_object)
     end
     
-    # TODO: change it to BFS algo
+    private 
+
     def draw_object_vision_map(current_object)
         current_object_row = current_object.get_position.row
         current_object_col = current_object.get_position.col
@@ -67,13 +76,5 @@ class Map
         else
           print "\e[2J\e[f"  # Unix-like
         end
-    end
-
-    def get_width
-        return @columns
-    end
-
-    def get_height
-        return @rows
     end
 end

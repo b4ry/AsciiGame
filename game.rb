@@ -19,12 +19,14 @@ class Game
         return @game_objects
     end
 
-    # TODO: move to some actions processer
+    # TODO: move to some actions processer or maybe to the game_object?
     def process_action(action, game_object) 
         if (action == "d" || action == "s" || action == "a" || action == "w")
             move(action, game_object)
         end
     end
+
+    private
 
     def move(direction, game_object)
         game_object_position = game_object.get_position
