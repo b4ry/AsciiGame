@@ -1,4 +1,4 @@
-require_relative "gameObject.rb"
+require_relative "game_object.rb"
 
 RED = "\e[31m"
 GREEN = "\e[32m"

@@ -1,7 +1,7 @@
 require 'io/console'
 require_relative 'map'
-require_relative 'player'
-require_relative 'wall'
+require_relative './game_objects/player'
+require_relative './game_objects/wall'
 
 class Game
     # TODO: move to some actions processer

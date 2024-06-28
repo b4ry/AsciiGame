@@ -23,6 +23,7 @@ class Map
         draw_object_vision_map(current_object)
     end
     
+    # TODO: change it to BFS algo
     def draw_object_vision_map(current_object)
         current_object_row = current_object.get_position.row
         current_object_col = current_object.get_position.col

@@ -1,4 +1,4 @@
-require_relative "gameObject.rb"
+require_relative "game_object.rb"
 
 class Wall < GameObject
     Position = Struct.new(:row, :col)
