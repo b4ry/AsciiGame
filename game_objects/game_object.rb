@@ -7,7 +7,7 @@ class GameObject
     end
   
     def get_id
-      @id
+      return @id
     end
 end
   

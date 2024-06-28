@@ -16,7 +16,7 @@ class Game
     end
 
     def get_game_objects
-        @game_objects
+        return @game_objects
     end
 
     # TODO: move to some actions processer

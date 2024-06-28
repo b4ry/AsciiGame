@@ -70,10 +70,10 @@ class Map
     end
 
     def get_width
-        @columns
+        return @columns
     end
 
     def get_height
-        @rows
+        return @rows
     end
 end

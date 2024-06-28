@@ -10,10 +10,10 @@ class Wall < GameObject
     end
 
     def get_position
-        @position
+        return @position
     end
 
     def to_s
-        "#{@shape}"
+        return "#{@shape}"
     end
 end
