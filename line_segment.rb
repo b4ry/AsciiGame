@@ -11,7 +11,7 @@ class LineSegment
       @slope, @intercept = slope_intercept(@x1, @y1, @x2, @y2)
     end
   
-    def intersection(other_line)
+    def intersects_line?(other_line)
         # check if lines are parallel
         return false if @slope == other_line.slope
         
@@ -34,6 +34,30 @@ class LineSegment
             false
         end
     end
+
+    def line_crosses_grid?(cell_x, cell_y, cell_size)
+        top_left = [cell_x, cell_y]
+        top_right = [cell_x, cell_y + cell_size]
+        bottom_left = [cell_x + cell_size, cell_y]
+        bottom_right = [cell_x + cell_size, cell_y + cell_size]
+
+        top_edge = LineSegment.new(top_left[0], top_left[1], top_right[0], top_right[1])
+        bottom_edge = LineSegment.new(bottom_left[0], bottom_left[1], bottom_right[0], bottom_right[1])
+        left_edge = LineSegment.new(top_left[0], top_left[1], bottom_left[0], bottom_left[1])
+        right_edge = LineSegment.new(top_right[0], top_right[1], bottom_right[0], bottom_right[1])
+      
+        # check intersections with any of four edges of the cell
+        return intersects_line?(top_edge) || intersects_line?(bottom_edge) || intersects_line?(left_edge) || intersects_line?(right_edge)
+    end
+
+    def within_bounds?(x, y)
+        min_x, max_x = [@x1, @x2].minmax
+        min_y, max_y = [@y1, @y2].minmax
+
+        # TODO: it should also check some other points, because in this case standing next to a wall will obstruct a field next to it, because it goes through a corner.
+        # maybe check not only middle of player and middle of grid, but also middle of player and any grid corner?
+        return x.between?(min_x, max_x) && y.between?(min_y, max_y)
+    end
   
     private
   
@@ -46,17 +70,10 @@ class LineSegment
             # calculate slope from a = (y2 - y1) / (x2 - x1)
             slope = (y2-y1).to_f / (x2 - x1)
             # calculate intercept from y = a * x + c
-            intercept = y2 - a * x2
+            intercept = y2 - slope * x2
             
             return [slope, intercept]
         end
-    end
-  
-    def within_bounds?(x, y)
-        min_x, max_x = [@x1, @x2].minmax
-        min_y, max_y = [@y1, @y2].minmax
-
-        return x.between?(min_x, max_x) && y.between?(min_y, max_y)
     end
 end
   

@@ -1,3 +1,5 @@
+require_relative "line_segment.rb"
+
 class Map
     def initialize(game_objects)        
         begin
@@ -50,7 +52,14 @@ class Map
 
         for row in fov_row_min..fov_row_max do
             for col in fov_col_min..fov_col_max do
-                print @map[row][col]
+                line_segment = LineSegment.new(row+0.5, col+0.5, current_object_row+0.5, current_object_col+0.5)
+                crosses = line_segment.line_crosses_grid?(3, 3, 1)
+                
+                if(!crosses || (row == 3 && col == 3))
+                    print @map[row][col]
+                else
+                    print "  "
+                end
             end
             print "\n"
         end

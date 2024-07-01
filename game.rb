@@ -83,6 +83,11 @@ if __FILE__ == $0
         game.add_object(horizontalWallDown)
     end
     
+    wall = Wall.new(3, 3, true)
+    def wall.to_s
+        return " W"
+    end
+    game.add_object(wall)
     map.draw_map(player)
 
     begin
