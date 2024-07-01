@@ -1,9 +1,9 @@
 require_relative "game_object.rb"
 
-# RED = "\e[31m"
-# GREEN = "\e[32m"
-# YELLOW = "\e[33m"
-# RESET = "\e[0m"
+RED = "\e[31m"
+GREEN = "\e[32m"
+YELLOW = "\e[33m"
+RESET = "\e[0m"
 
 class Player < GameObject
     Position = Struct.new(:row, :col)
@@ -27,6 +27,6 @@ class Player < GameObject
     end
 
     def to_s
-        return "😊"
+        return "#{GREEN} @#{RESET}"
     end  
 end

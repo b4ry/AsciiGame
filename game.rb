@@ -90,6 +90,15 @@ if __FILE__ == $0
     wall2 = Wall.new(3, 4)
     game.add_object(wall2)
 
+    wall4 = Wall.new(3, 5)
+    game.add_object(wall4)
+
+    wall5 = Wall.new(4, 3)
+    game.add_object(wall5)
+
+    wall6 = Wall.new(4, 5)
+    game.add_object(wall6)
+
     wall3 = Wall.new(7, 6)
     game.add_object(wall3)
 
