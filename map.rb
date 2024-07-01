@@ -52,15 +52,29 @@ class Map
 
         for row in fov_row_min..fov_row_max do
             for col in fov_col_min..fov_col_max do
+                # a line between a player and the current cell
                 line_segment = LineSegment.new(row+0.5, col+0.5, current_object_row+0.5, current_object_col+0.5)
-                crosses = line_segment.line_crosses_grid?(3, 3, 1)
-                
-                if(!crosses || (row == 3 && col == 3))
+                crosses = false
+                obstructing_objects = @game_objects.select { |key, value| value.obstructs? && (value.get_position.row != row || value.get_position.col != col) }
+
+                # checks intersection with all game objects
+                obstructing_objects.each do |key, value|
+                    game_object_position = value.get_position
+                    
+                    crosses = line_segment.line_crosses_grid?(game_object_position.row, game_object_position.col, 1)
+
+                    if(crosses)
+                        break
+                    end
+                end
+
+                if(!crosses)
                     print @map[row][col]
                 else
                     print "  "
                 end
             end
+
             print "\n"
         end
 

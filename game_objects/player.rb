@@ -9,7 +9,7 @@ class Player < GameObject
     Position = Struct.new(:row, :col)
     
     def initialize
-        super()
+        super(false)
         @position = Position.new(1, 1)
         @fov = 5
     end

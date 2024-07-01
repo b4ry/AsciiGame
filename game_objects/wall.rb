@@ -4,7 +4,7 @@ class Wall < GameObject
     Position = Struct.new(:row, :col)
     
     def initialize(x, y, vertical)
-        super()
+        super(true)
         @position = Position.new(x, y)
         @shape = vertical ? " |" : " -"
     end

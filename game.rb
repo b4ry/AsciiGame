@@ -88,6 +88,19 @@ if __FILE__ == $0
         return " W"
     end
     game.add_object(wall)
+
+    wall2 = Wall.new(3, 4, true)
+    def wall2.to_s
+        return " W"
+    end
+    game.add_object(wall2)
+
+    wall3 = Wall.new(7, 6, true)
+    def wall3.to_s
+        return " W"
+    end
+    game.add_object(wall3)
+
     map.draw_map(player)
 
     begin
