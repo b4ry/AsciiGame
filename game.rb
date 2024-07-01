@@ -2,6 +2,7 @@ require 'io/console'
 require_relative 'map'
 require_relative './game_objects/player'
 require_relative './game_objects/wall'
+require_relative './game_objects/border'
 
 class Game
     # TODO: move to some actions processer
@@ -65,40 +66,31 @@ if __FILE__ == $0
     player = Player.new
     game.add_object(player)
 
-    # ADD VERTICAL WALLS
+    # ADD VERTICAL BORDER
     for x in 0..map_height-1 do
-        verticalWallLeft = Wall.new(x, 0, true)
+        verticalWallLeft = Border.new(x, 0, true)
         game.add_object(verticalWallLeft)
 
-        verticalWallRight = Wall.new(x, map_width-1, true)
+        verticalWallRight = Border.new(x, map_width-1, true)
         game.add_object(verticalWallRight)
     end
 
-    # ADD HORIZONTAL WALLS
+    # ADD HORIZONTAL BORDER
     for y in 1..map_width-2 do
-        horizontalWallUp = Wall.new(0, y, false)
+        horizontalWallUp = Border.new(0, y, false)
         game.add_object(horizontalWallUp)
 
-        horizontalWallDown = Wall.new(map_height-1, y, false)
+        horizontalWallDown = Border.new(map_height-1, y, false)
         game.add_object(horizontalWallDown)
     end
     
-    wall = Wall.new(3, 3, true)
-    def wall.to_s
-        return " W"
-    end
+    wall = Wall.new(3, 3)
     game.add_object(wall)
 
-    wall2 = Wall.new(3, 4, true)
-    def wall2.to_s
-        return " W"
-    end
+    wall2 = Wall.new(3, 4)
     game.add_object(wall2)
 
-    wall3 = Wall.new(7, 6, true)
-    def wall3.to_s
-        return " W"
-    end
+    wall3 = Wall.new(7, 6)
     game.add_object(wall3)
 
     map.draw_map(player)
