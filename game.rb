@@ -69,6 +69,8 @@ if __FILE__ == $0
 
     last_menu_option_index = menu_options.length - 1;
 
+    print(HIDE_CURSOR)
+
     while(user_input != "q")
         system("cls")
 
@@ -101,7 +103,7 @@ if __FILE__ == $0
     end
     
     system("cls")
-    
+
     if(user_input == "q")
         return
     end
@@ -159,4 +161,6 @@ if __FILE__ == $0
 
         map.draw_map(player)
     end while user_input != "q"
+
+    print(SHOW_CURSOR)
 end
