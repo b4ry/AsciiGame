@@ -1,4 +1,5 @@
 require_relative "game_object.rb"
+require_relative "../constants/constants.rb"
 
 class Wall < GameObject
     Position = Struct.new(:row, :col)
@@ -13,6 +14,6 @@ class Wall < GameObject
     end
 
     def to_s
-        return " W"
+        return "#{BLACK} W#{RESET}"
     end
 end

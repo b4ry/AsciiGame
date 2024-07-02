@@ -3,9 +3,7 @@ require_relative 'map'
 require_relative './game_objects/player'
 require_relative './game_objects/wall'
 require_relative './game_objects/border'
-
-CYAN = "\e[36m"
-RESET = "\e[0m"
+require_relative "./constants/constants.rb"
 
 class Game
     # TODO: move to some actions processer
@@ -102,6 +100,8 @@ if __FILE__ == $0
         end
     end
     
+    system("cls")
+    
     if(user_input == "q")
         return
     end
@@ -142,13 +142,13 @@ if __FILE__ == $0
     wall4 = Wall.new(3, 5)
     game.add_object(wall4)
 
-    wall5 = Wall.new(4, 3)
+    wall5 = Wall.new(5, 3)
     game.add_object(wall5)
 
-    wall6 = Wall.new(4, 5)
+    wall6 = Wall.new(5, 4)
     game.add_object(wall6)
 
-    wall3 = Wall.new(7, 6)
+    wall3 = Wall.new(5, 5)
     game.add_object(wall3)
 
     map.draw_map(player)

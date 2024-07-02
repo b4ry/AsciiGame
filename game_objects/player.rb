@@ -1,9 +1,5 @@
 require_relative "game_object.rb"
-
-RED = "\e[31m"
-GREEN = "\e[32m"
-YELLOW = "\e[33m"
-RESET = "\e[0m"
+require_relative "../constants/constants.rb"
 
 class Player < GameObject
     Position = Struct.new(:row, :col)

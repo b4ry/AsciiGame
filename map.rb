@@ -59,6 +59,7 @@ class Map
                 line_segment_left = LineSegment.new(row + 0.5, col, current_object_cell_center[0], current_object_cell_center[1])
                 line_segment_right = LineSegment.new(row + 0.5, col + 1, current_object_cell_center[0], current_object_cell_center[1])
 
+                # if any of the line segment edge is obstructed
                 line_segment_crosses = [false, false, false, false]
                 
                 # checks intersection with all obstructing game objects
