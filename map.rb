@@ -52,23 +52,32 @@ class Map
 
         for row in fov_row_min..fov_row_max do
             for col in fov_col_min..fov_col_max do
-                # a line between a player and the current cell
-                line_segment = LineSegment.new(row+0.5, col+0.5, current_object_row+0.5, current_object_col+0.5)
-                crosses = false
+                # a line between current object and the current cell
+                current_object_cell_center = [current_object_row + 0.5, current_object_col + 0.5]
+                line_segment_top = LineSegment.new(row, col + 0.5, current_object_cell_center[0], current_object_cell_center[1])
+                line_segment_bottom = LineSegment.new(row + 1, col + 0.5, current_object_cell_center[0], current_object_cell_center[1])
+                line_segment_left = LineSegment.new(row + 0.5, col, current_object_cell_center[0], current_object_cell_center[1])
+                line_segment_right = LineSegment.new(row + 0.5, col + 1, current_object_cell_center[0], current_object_cell_center[1])
+
+                crosses = [false, false, false, false]
+                
+                # checks intersection with all obstructing game objects
                 obstructing_objects = @game_objects.select { |key, value| value.obstructs? && (value.get_position.row != row || value.get_position.col != col) }
 
-                # checks intersection with all game objects
                 obstructing_objects.each do |key, value|
-                    game_object_position = value.get_position
+                    obstructing_object = value.get_position
                     
-                    crosses = line_segment.line_crosses_grid?(game_object_position.row, game_object_position.col, 1)
+                    crosses[0] |= line_segment_top.line_crosses_grid?(obstructing_object.row, obstructing_object.col, 1)
+                    crosses[1] |= line_segment_bottom.line_crosses_grid?(obstructing_object.row, obstructing_object.col, 1)
+                    crosses[2] |= line_segment_left.line_crosses_grid?(obstructing_object.row, obstructing_object.col, 1)
+                    crosses[3] |= line_segment_right.line_crosses_grid?(obstructing_object.row, obstructing_object.col, 1)
 
-                    if(crosses)
+                    if(crosses[0] && crosses[1] && crosses[2] && crosses[3])
                         break
                     end
                 end
 
-                if(!crosses)
+                if(!(crosses[0] && crosses[1] && crosses[2] && crosses[3]))
                     print @map[row][col]
                 else
                     print "  "
