@@ -4,6 +4,9 @@ require_relative './game_objects/player'
 require_relative './game_objects/wall'
 require_relative './game_objects/border'
 
+CYAN = "\e[36m"
+RESET = "\e[0m"
+
 class Game
     # TODO: move to some actions processer
     Position = Struct.new(:row, :col)
@@ -57,6 +60,52 @@ class Game
 end
 
 if __FILE__ == $0
+    user_input = nil
+    menu_option_chosen = 0
+
+    menu_options = [
+        "1. Start Game#{RESET}",
+        "2. Options#{RESET}",
+        "3. Exit#{RESET}"
+    ]
+
+    last_menu_option_index = menu_options.length - 1;
+
+    while(user_input != "q")
+        system("cls")
+
+        menu_options.each_with_index do |menu_option, index|
+            puts("#{CYAN unless menu_option_chosen != index}" + menu_option)
+        end
+
+        user_input = STDIN.getch
+
+        if(user_input == "s")
+            if(menu_option_chosen == last_menu_option_index)
+                menu_option_chosen = 0
+            else
+                menu_option_chosen += 1
+            end
+        elsif(user_input == "w")
+            if(menu_option_chosen == 0)
+                menu_option_chosen = last_menu_option_index
+            else
+                menu_option_chosen -= 1
+            end
+        elsif(user_input == "\r")
+            if(menu_option_chosen == last_menu_option_index)
+                user_input = "q"
+            else
+                user_input = 0
+                break
+            end
+        end
+    end
+    
+    if(user_input == "q")
+        return
+    end
+
     game = Game.new
     map = Map.new(game.get_game_objects)
 
