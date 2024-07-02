@@ -26,7 +26,7 @@ class Map
 
     def draw_map(current_object)
         clear_screen
-        print "\n"
+        print("\n")
 
         reset_map
         place_objects
@@ -59,7 +59,7 @@ class Map
                 line_segment_left = LineSegment.new(row + 0.5, col, current_object_cell_center[0], current_object_cell_center[1])
                 line_segment_right = LineSegment.new(row + 0.5, col + 1, current_object_cell_center[0], current_object_cell_center[1])
 
-                crosses = [false, false, false, false]
+                line_segment_crosses = [false, false, false, false]
                 
                 # checks intersection with all obstructing game objects
                 obstructing_objects = @game_objects.select { |key, value| value.obstructs? && (value.get_position.row != row || value.get_position.col != col) }
@@ -67,17 +67,17 @@ class Map
                 obstructing_objects.each do |key, value|
                     obstructing_object = value.get_position
                     
-                    crosses[0] |= line_segment_top.line_crosses_grid?(obstructing_object.row, obstructing_object.col, 1)
-                    crosses[1] |= line_segment_bottom.line_crosses_grid?(obstructing_object.row, obstructing_object.col, 1)
-                    crosses[2] |= line_segment_left.line_crosses_grid?(obstructing_object.row, obstructing_object.col, 1)
-                    crosses[3] |= line_segment_right.line_crosses_grid?(obstructing_object.row, obstructing_object.col, 1)
+                    line_segment_crosses[0] |= line_segment_top.line_crosses_grid?(obstructing_object.row, obstructing_object.col, 1)
+                    line_segment_crosses[1] |= line_segment_bottom.line_crosses_grid?(obstructing_object.row, obstructing_object.col, 1)
+                    line_segment_crosses[2] |= line_segment_left.line_crosses_grid?(obstructing_object.row, obstructing_object.col, 1)
+                    line_segment_crosses[3] |= line_segment_right.line_crosses_grid?(obstructing_object.row, obstructing_object.col, 1)
 
-                    if(crosses[0] && crosses[1] && crosses[2] && crosses[3])
+                    if(all_line_segments_cross(line_segment_crosses))
                         break
                     end
                 end
 
-                if(!(crosses[0] && crosses[1] && crosses[2] && crosses[3]))
+                if(!(all_line_segments_cross(line_segment_crosses)))
                     print @map[row][col]
                 else
                     print "  "
@@ -90,7 +90,11 @@ class Map
         print "\n"
         puts("Current coordinates: x - #{current_object_row}, y - #{current_object_col}, fov (field of vision) - #{current_object_fov}")
     end
-    
+
+    def all_line_segments_cross(crosses)
+        return crosses[0] && crosses[1] && crosses[2] && crosses[3]
+    end
+
     def reset_map
         @map = Array.new(@rows) { Array.new(@columns, " .") }
     end
@@ -106,7 +110,7 @@ class Map
         if RUBY_PLATFORM =~ /win32|win64|mingw/
           system("cls")  # Windows
         else
-          print "\e[2J\e[f"  # Unix-like
+          print("\e[2J\e[f")  # Unix-like
         end
     end
 end
