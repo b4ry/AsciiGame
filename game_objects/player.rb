@@ -1,5 +1,6 @@
-require_relative "game_object.rb"
-require_relative "../constants/constants.rb"
+require_relative 'game_object.rb'
+require_relative '../constants/constants.rb'
+require_relative '../game_options'
 
 class Player < GameObject
     Position = Struct.new(:row, :col)
@@ -23,6 +24,6 @@ class Player < GameObject
     end
 
     def to_s
-        return "#{GREEN} @#{RESET}"
+        return "#{GameOptions.get_player_color} #{GameOptions.get_player_icon}#{RESET}"
     end  
 end
