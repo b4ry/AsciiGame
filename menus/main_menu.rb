@@ -83,5 +83,7 @@ class MainMenu < Menu
     
             map.draw_map(player)
         end while user_input != "q"
+
+        system(CLEAR_SCREEN)
     end
 end
