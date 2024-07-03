@@ -8,7 +8,7 @@
             "type": "rdbg",
             "name": "Debug current file with rdbg",
             "request": "launch",
-            "script": "./game.rb",
+            "script": "./main.rb",
             "args": [],
             "askParameters": true,
             "useTerminal": true
