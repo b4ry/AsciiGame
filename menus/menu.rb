@@ -13,7 +13,7 @@ class Menu
         print(HIDE_CURSOR)
 
         while(true)
-            system("cls")
+            system(CLEAR_SCREEN)
             puts("#{@title}#{COLORS[RESET]}")
 
             @menu_options.each_with_index do |menu_option, index|

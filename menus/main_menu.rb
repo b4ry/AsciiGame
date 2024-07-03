@@ -28,7 +28,7 @@ class MainMenu < Menu
     end
 
     def start_game()
-        system("cls")
+        system(CLEAR_SCREEN)
     
         game = Game.new
         map = Map.new(game.get_game_objects)

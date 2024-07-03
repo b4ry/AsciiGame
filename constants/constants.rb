@@ -4,6 +4,8 @@ GREEN = "GREEN"
 CYAN = "CYAN"
 RESET = "RESET"
 
+CLEAR_SCREEN = "cls"
+
 # ANSI escape codes
 COLORS = {
     BLACK => "\e[30m",

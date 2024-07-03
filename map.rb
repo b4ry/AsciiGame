@@ -1,4 +1,5 @@
-require_relative "line_segment.rb"
+require_relative 'line_segment.rb'
+require_relative 'constants/constants'
 
 class Map
     def initialize(game_objects)        
@@ -109,7 +110,7 @@ class Map
 
     def clear_screen
         if RUBY_PLATFORM =~ /win32|win64|mingw/
-          system("cls")  # Windows
+          system(CLEAR_SCREEN)  # Windows
         else
           print("\e[2J\e[f")  # Unix-like
         end
