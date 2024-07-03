@@ -1,6 +1,10 @@
 require_relative '../constants/constants.rb'
 
 class Menu
+    def initialize(path, title) 
+        @title = "#{path + ' -> ' unless path == nil}#{title}"
+    end
+
     def draw
         user_input = nil
         menu_option_chosen = 0
@@ -10,11 +14,13 @@ class Menu
 
         while(true)
             system("cls")
-            puts("#{@title}")
+            puts("#{@title}#{COLORS[RESET]}")
 
             @menu_options.each_with_index do |menu_option, index|
-                puts("#{CYAN unless menu_option_chosen != index}" + menu_option.description)
+                puts("#{COLORS[CYAN] unless menu_option_chosen != index}" + menu_option.description + "#{COLORS[RESET]}")
             end
+
+            puts "\n#{@details}#{COLORS[RESET]}"
 
             user_input = STDIN.getch
 
@@ -31,6 +37,10 @@ class Menu
                     menu_option_chosen -= 1
                 end
             elsif(user_input == "\r")
+                if(menu_option_chosen == last_menu_option_index)
+                    break
+                end
+                
                 @menu_options[menu_option_chosen].action.call
             end
         end

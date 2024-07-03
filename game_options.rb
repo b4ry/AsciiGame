@@ -10,7 +10,7 @@ class GameOptions
     end
 
     def self.get_player_color
-        return @player_color ||= GREEN
+        return @player_color ||= COLORS[GREEN]
     end
 
     def self.set_player_color(player_color)

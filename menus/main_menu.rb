@@ -1,6 +1,7 @@
 require 'io/console'
 require_relative 'menu'
 require_relative 'menu_option'
+require_relative 'options_menu'
 require_relative '../map'
 require_relative '../game'
 require_relative '../game_objects/player'
@@ -11,17 +12,20 @@ require_relative '../constants/constants.rb'
 class MainMenu < Menu
     def initialize
         @menu_options = [
-            MenuOption.new("1. Start Game#{RESET}", lambda { start_game }),
-            MenuOption.new("2. Options#{RESET}", nil),
-            MenuOption.new("3. Exit#{RESET}", lambda do
-                print(SHOW_CURSOR)
-                exit(0)
-            end)
+            MenuOption.new("1. Start Game", lambda { start_game }),
+            MenuOption.new("2. Options", lambda { show_options }),
+            MenuOption.new("3. Exit", lambda {})
         ]
-        @title = "**** WELCOME TO VOID ****"
+
+        super(nil, "*** WELCOME TO #{COLORS[RED]}VOID#{COLORS[RESET]} ***")
     end
 
     private
+
+    def show_options
+        options_menu = OptionsMenu.new("*** MAIN MENU")
+        options_menu.draw
+    end
 
     def start_game()
         system("cls")

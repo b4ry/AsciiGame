@@ -14,6 +14,6 @@ class Wall < GameObject
     end
 
     def to_s
-        return "#{BLACK} W#{RESET}"
+        return "#{COLORS[BLACK]} W#{COLORS[RESET]}"
     end
 end
