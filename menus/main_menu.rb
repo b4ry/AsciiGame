@@ -17,13 +17,13 @@ class MainMenu < Menu
             MenuOption.new("3. Exit", lambda {})
         ]
 
-        super(nil, "*** WELCOME TO #{COLORS[RED]}VOID#{COLORS[RESET]} ***")
+        super(nil, "WELCOME TO #{COLORS[RED]}VOID#{COLORS[RESET]}")
     end
 
     private
 
     def show_options
-        options_menu = OptionsMenu.new("*** MAIN MENU")
+        options_menu = OptionsMenu.new("MAIN MENU")
         options_menu.draw
     end
 

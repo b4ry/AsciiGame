@@ -11,7 +11,7 @@ class PlayerIconMenu < Menu
             MenuOption.new("3. Back", lambda {})
         ]
 
-        super(path, "PLAYER ICON ***")
+        super(path, "PLAYER ICON")
         @details = "Current player icon: #{GameOptions.get_player_icon}"
     end
 

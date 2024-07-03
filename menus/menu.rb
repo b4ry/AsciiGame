@@ -2,16 +2,13 @@ require_relative '../constants/constants.rb'
 
 class Menu
     def initialize(path, title) 
-        @title = "#{path + ' -> ' unless path == nil}#{title}"
+        @title = "#{path + ' / ' unless path == nil}#{title}"
     end
 
     def draw
         user_input = nil
         menu_option_chosen = 0
         last_menu_option_index = @menu_options.length - 1;
-
-        print(HIDE_CURSOR)
-        system(CLEAR_SCREEN)
 
         while(true)
             move_cursor_to(0, 0)
@@ -58,7 +55,6 @@ class Menu
       print "\e[#{y};#{x}H"
     end
     
-    # Function to clear a specific line
     def clear_line
       print "\e[2K"
     end

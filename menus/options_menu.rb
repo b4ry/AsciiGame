@@ -13,7 +13,7 @@ class OptionsMenu < Menu
             MenuOption.new("3. Back", lambda {})
         ]
 
-        super(path, "GAME OPTIONS ***")
+        super(path, "GAME OPTIONS")
     end
 
     def set_player_icon

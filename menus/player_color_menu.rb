@@ -11,7 +11,7 @@ class PlayerColorMenu < Menu
             MenuOption.new("3. Back", lambda {})
         ]
 
-        super(path, "PLAYER COLOR ***")
+        super(path, "PLAYER COLOR")
 
         current_color = GameOptions.get_player_color
         @details = "Current player color: #{current_color}#{COLORS.key(current_color)}"
