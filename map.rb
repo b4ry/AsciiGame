@@ -2,27 +2,30 @@ require_relative 'line_segment.rb'
 require_relative 'constants/constants'
 
 class Map
-    def initialize(game_objects)        
-        begin
-            puts("Provide map width (min 3): ")
-            @columns = gets.to_i
-        end while @columns < 3
-
-        begin
-            puts("Provide map height (min 3): ")
-            @rows = gets.to_i
-        end while @rows < 3
+    attr_accessor :map_objects
+           
+    def initialize()
+        @columns = 100
+        @rows = 100
 
         @map = Array.new(@rows) { Array.new(@columns) }
-        @game_objects = game_objects
-    end
-    
-    def get_width
-        return @columns
-    end
+        @map_objects = {}
 
-    def get_height
-        return @rows
+        for x in 0..@rows-1 do
+            verticalBorderLeft = Border.new(x, 0, true)
+            add_map_object(verticalBorderLeft)
+    
+            verticalBorderRight = Border.new(x, @columns-1, true)
+            add_map_object(verticalBorderRight)
+        end
+    
+        for y in 1..@columns-2 do
+            horizontalBorderUp = Border.new(0, y, false)
+            add_map_object(horizontalBorderUp)
+    
+            horizontalBorderDown = Border.new(@rows-1, y, false)
+            add_map_object(horizontalBorderDown)
+        end
     end
 
     def draw_map(current_object)
@@ -32,6 +35,10 @@ class Map
         reset_map
         place_objects
         draw_object_vision_map(current_object)
+    end
+
+    def add_map_object(obj)
+        @map_objects[obj.get_id] = obj
     end
     
     private 
@@ -63,8 +70,8 @@ class Map
                 # if any of the line segment edge is obstructed
                 line_segment_crosses = [false, false, false, false]
                 
-                # checks intersection with all obstructing game objects
-                obstructing_objects = @game_objects.select { |key, value| value.obstructs? && (value.get_position.row != row || value.get_position.col != col) }
+                # checks intersection with all obstructing map objects
+                obstructing_objects = @map_objects.select { |key, value| value.obstructs? && (value.get_position.row != row || value.get_position.col != col) }
 
                 obstructing_objects.each do |key, value|
                     obstructing_object = value.get_position
@@ -102,7 +109,7 @@ class Map
     end
 
     def place_objects
-        @game_objects.each do |key, value|
+        @map_objects.each do |key, value|
             position = value.get_position
             @map[position.row][position.col] = value.to_s
         end

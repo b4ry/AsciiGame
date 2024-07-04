@@ -1,20 +1,10 @@
-class Game
-    # TODO: move to some actions processer
+class ActionProcessor
     Position = Struct.new(:row, :col)
 
-    def initialize()
-        @game_objects = {}
+    def initialize(map_objects)
+        @map_objects = map_objects
     end
 
-    def add_object(obj)
-        @game_objects[obj.get_id] = obj
-    end
-
-    def get_game_objects
-        return @game_objects
-    end
-
-    # TODO: move to some actions processer or maybe to the game_object?
     def process_action(action, game_object) 
         if (action == "d" || action == "s" || action == "a" || action == "w")
             move(action, game_object)
@@ -38,7 +28,7 @@ class Game
         end
 
         # TODO: can be done in a smarter way; just check the collection of a particular row, instead of all objects
-        @game_objects.each do |key, value|
+        @map_objects.each do |key, value|
             game_object_position = value.get_position
             
             if(game_object_position.row == new_position.row && game_object_position.col == new_position.col)
