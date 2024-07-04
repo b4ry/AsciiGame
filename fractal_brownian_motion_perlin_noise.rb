@@ -1,10 +1,10 @@
 # implemented according to this: https://rtouti.github.io/graphics/perlin-noise-algorithm
 class FractalBrownianMotionPerlinNoise
-    def initialize
+    def initialize()
         @permutation = make_permutation()
     end
 
-    def generate_perlin_noise(map, amp, freq, octaves_number)
+    def generate_perlin_noise(map, amp, freq, octaves_number, seed)
         map.each_with_index do |row, i|
             row.each_with_index do |column, j|
                 result = 0.0
@@ -12,7 +12,7 @@ class FractalBrownianMotionPerlinNoise
                 frequency = freq # bigger frequency, more water
     
                 0.upto(octaves_number - 1) do
-                    n = amplitude * perlin(i * frequency, j * frequency)
+                    n = amplitude * perlin(i * frequency, j * frequency, seed)
                     result += n
             
                     amplitude *= 0.5
@@ -47,8 +47,8 @@ class FractalBrownianMotionPerlinNoise
     def shuffle(array_to_shuffle)
 	    array_to_shuffle.length-1.downto(1) do |current|
 		    index = (rand()*(current-1)).round()
+
 		    temp = array_to_shuffle[current]
-    
 		    array_to_shuffle[current] = array_to_shuffle[index]
 		    array_to_shuffle[index] = temp
         end
@@ -94,9 +94,9 @@ class FractalBrownianMotionPerlinNoise
 	    return a1 + t * (a2 - a1)
     end
 
-    def perlin(x, y)
-	    x0 = x.floor & 255
-	    y0 = y.floor & 255
+    def perlin(x, y, seed)
+	    x0 = (x.floor + seed) & 255
+	    y0 = (y.floor + seed) & 255
 
 	    xf = x - x.floor
 	    yf = y - y.floor

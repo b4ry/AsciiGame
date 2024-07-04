@@ -1,5 +1,5 @@
 class PerlinNoise
-    def generate_fbm_perlin_noise(map, amp, freq, octaves_number)
+    def generate_fbm_perlin_noise(map, amp, freq, octaves_number, seed)
         map.each_with_index do |row, i|
             row.each_with_index do |column, j|
                 result = 0.0
@@ -7,7 +7,7 @@ class PerlinNoise
                 frequency = freq # bigger frequency, more water
 
                 0.upto(octaves_number-1) do
-                    n = amplitude * perlin(i * frequency, j * frequency, 0)
+                    n = amplitude * perlin(i * frequency, j * frequency, seed)
 		            result += n
 		
 		            amplitude *= 0.5
@@ -15,17 +15,6 @@ class PerlinNoise
                 end
                 
                 map[i][j] = result
-            end
-        end
-    end
-
-    def generate_perlin_noise(map, scale, seed)
-        map.each_with_index do |row, i|
-            row.each_with_index do |column, j|
-                nx = i * scale;
-                ny = j * scale;
-
-                map[i][j] = perlin(nx, ny, seed);
             end
         end
     end
