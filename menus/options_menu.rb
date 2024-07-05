@@ -2,7 +2,6 @@ require_relative 'menu'
 require_relative 'menu_option'
 require_relative 'player_icon_menu'
 require_relative 'player_color_menu'
-require_relative '../constants/constants.rb'
 require_relative '../game_options'
 
 class OptionsMenu < Menu
@@ -17,12 +16,12 @@ class OptionsMenu < Menu
     end
 
     def set_player_icon
-        player_icon_menu = PlayerIconMenu.new(@title[0..-5])
+        player_icon_menu = PlayerIconMenu.new(@title)
         player_icon_menu.draw
     end
 
     def set_player_color
-        player_icon_menu = PlayerColorMenu.new(@title[0..-5])
-        player_icon_menu.draw
+        player_color_menu = PlayerColorMenu.new(@title)
+        player_color_menu.draw
     end
 end

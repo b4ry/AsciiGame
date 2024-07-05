@@ -1,12 +1,13 @@
+require_relative 'helpers/terminal_helper'
 require_relative 'menus/main_menu'
 require_relative 'constants/constants'
 
 if __FILE__ == $0
-    print(HIDE_CURSOR)
-    system(CLEAR_SCREEN)
+    TerminalHelper.hide_cursor()
+    TerminalHelper.clear_screen()
     
     main_menu = MainMenu.new
     main_menu.draw
 
-    print(SHOW_CURSOR)
+    TerminalHelper.show_cursor()
 end

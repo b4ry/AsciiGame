@@ -1,5 +1,6 @@
 require_relative 'line_segment.rb'
 require_relative 'constants/constants'
+require_relative 'helpers/terminal_helper'
 require_relative 'perlin_noise'
 
 class Map
@@ -42,13 +43,13 @@ class Map
                 @unaltered_map[i][j] = @map[i][j]
 
                 without_space = @map[i][j].sub(" .", ".")
-                print (without_space)
+                print(without_space)
             end
 
             puts
         end
 
-        clear_screen()
+        TerminalHelper.clear_screen()
         @map_objects = {}
 
         for x in 0..@rows-1 do
@@ -84,7 +85,7 @@ class Map
     private 
 
     def draw_object_vision_map(current_object)
-        move_cursor_to(0, 0)
+        TerminalHelper.go_to(0, 0)
 
         current_object_row = current_object.get_position.row
         current_object_col = current_object.get_position.col
@@ -138,22 +139,20 @@ class Map
             print "\n"
         end
 
-        move_cursor_to(fov_row_max + 2, 0)
-        print "\e[2K"
+        TerminalHelper.clear_line(fov_row_max + 2, 0)
 
         cursor_col = current_object_col <= 4 ? (current_object_fov_col_max+2)*2 : 24
 
         0.upto(fov_row_max) do |row|
-            move_cursor_to(row + 1, cursor_col)
+            TerminalHelper.go_to(row + 1, cursor_col)
             print "  "
         end
 
-        move_cursor_to(0, 30)
-        print "\e[0K"
-        puts("| Current coordinates: x - #{current_object_row}, y - #{current_object_col}, fov (field of vision) - #{current_object_fov}")
+        TerminalHelper.go_to(0, 30)
+        puts("| Current coordinates: x - #{current_object_row}, y - #{current_object_col}, fov (field of vision) - #{current_object_fov} ")
         
         5.times do |row|
-            move_cursor_to(row + 1, 30)
+            TerminalHelper.go_to(row + 1, 30)
             puts("|")
         end
     end
@@ -166,18 +165,6 @@ class Map
         @map_objects.each do |key, value|
             position = value.get_position
             @map[position.row][position.col] = value.to_s
-        end
-    end
-
-    def move_cursor_to(x, y)
-        print "\e[#{x};#{y}H"
-    end
-
-    def clear_screen
-        if RUBY_PLATFORM =~ /win32|win64|mingw/
-          system(CLEAR_SCREEN)  # Windows
-        else
-          print("\e[2J\e[f")  # Unix-like
         end
     end
 end

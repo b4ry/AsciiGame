@@ -46,7 +46,7 @@ class LineSegment
         left_edge = LineSegment.new(top_left[0], top_left[1], bottom_left[0], bottom_left[1])
         right_edge = LineSegment.new(top_right[0], top_right[1], bottom_right[0], bottom_right[1])
       
-        # check intersections with any of four edges of the cell
+        # check intersections with any of the four edges of the cell
         return intersects_line?(top_edge) || intersects_line?(bottom_edge) || intersects_line?(left_edge) || intersects_line?(right_edge)
     end
 
@@ -54,8 +54,6 @@ class LineSegment
         min_x, max_x = [@x1, @x2].minmax
         min_y, max_y = [@y1, @y2].minmax
 
-        # TODO: it should also check some other points, because in this case standing next to a wall will obstruct a field next to it, because it goes through a corner.
-        # maybe check not only middle of player and middle of grid, but also middle of player and any grid corner?
         return x.between?(min_x, max_x) && y.between?(min_y, max_y)
     end
   

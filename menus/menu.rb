@@ -1,3 +1,4 @@
+require_relative '../helpers/terminal_helper'
 require_relative '../constants/constants.rb'
 
 class Menu
@@ -11,16 +12,13 @@ class Menu
         last_menu_option_index = @menu_options.length - 1;
 
         loop do
-            clear_line(0, 0)
-            puts("#{@title}#{COLORS[RESET]}")
+            TerminalHelper.display_text_at("#{@title}#{COLORS[RESET]}", 0, 0)
 
             @menu_options.each_with_index do |menu_option, index|
-                clear_line(index + 2, 0)
-                puts("#{COLORS[CYAN] unless menu_option_chosen != index}" + menu_option.description + "#{COLORS[RESET]}")
+                TerminalHelper.display_text_at("#{COLORS[CYAN] unless menu_option_chosen != index}" + menu_option.description + "#{COLORS[RESET]}", index + 2, 0)
             end
 
-            clear_line(@menu_options.length + 3, 0)
-            puts "#{@details}#{COLORS[RESET]}"
+            TerminalHelper.display_text_at("#{@details}#{COLORS[RESET]}", @menu_options.length + 3, 0)
 
             user_input = STDIN.getch
 
@@ -44,12 +42,5 @@ class Menu
                 @menu_options[menu_option_chosen].action.call
             end
         end
-    end
-
-    private 
-
-    def clear_line(x, y)
-        print "\e[#{x};#{y}H"
-        print "\e[2K"
     end
 end
