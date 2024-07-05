@@ -6,24 +6,28 @@ class ActionProcessor
     end
 
     def process_action(action, game_object) 
-        if (action == "d" || action == "s" || action == "a" || action == "w")
+        if (is_movement?(action))
             move(action, game_object)
         end
     end
 
     private
 
+    def is_movement?(action)
+        return action == RIGHT || action == DOWN || action == LEFT || action == UP
+    end
+
     def move(direction, game_object)
         game_object_position = game_object.get_position
         new_position = Position.new(game_object_position.row, game_object_position.col);
 
-        if direction == "d"
+        if direction == RIGHT
             new_position.col = game_object_position.col + 1
-        elsif direction == "a"
+        elsif direction == LEFT
             new_position.col = game_object_position.col - 1
-        elsif direction == "s"
+        elsif direction == DOWN
             new_position.row = game_object_position.row + 1
-        elsif direction == "w"
+        elsif direction == UP
             new_position.row = game_object_position.row - 1
         end
 

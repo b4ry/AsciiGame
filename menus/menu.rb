@@ -24,19 +24,19 @@ class Menu
 
             user_input = STDIN.getch
 
-            if(user_input == "s")
+            if(user_input == DOWN)
                 if(menu_option_chosen == last_menu_option_index)
                     menu_option_chosen = 0
                 else
                     menu_option_chosen += 1
                 end
-            elsif(user_input == "w")
+            elsif(user_input == UP)
                 if(menu_option_chosen == 0)
                     menu_option_chosen = last_menu_option_index
                 else
                     menu_option_chosen -= 1
                 end
-            elsif(user_input == "\r")
+            elsif(user_input == ENTER)
                 if(menu_option_chosen == last_menu_option_index)
                     break
                 end

@@ -10,9 +10,6 @@ LIGHT_GREEN = "LIGHT_GREEN"
 BROWN = "BROWN"
 RESET = "RESET"
 
-CLEAR_SCREEN = "cls"
-
-# ANSI escape codes
 COLORS = {
     BLACK => "\e[30m",
     RED => "\e[31m",
@@ -40,3 +37,11 @@ BG_COLORS = {
 
 HIDE_CURSOR = "\e[?25l"
 SHOW_CURSOR = "\e[?25h"
+
+CLEAR_SCREEN = "cls"
+ENTER = "\r"
+
+UP = "w"
+DOWN = "s"
+LEFT = "a"
+RIGHT = "d"
