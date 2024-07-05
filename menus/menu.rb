@@ -10,19 +10,16 @@ class Menu
         menu_option_chosen = 0
         last_menu_option_index = @menu_options.length - 1;
 
-        while(true)
-            move_cursor_to(0, 0)
-            clear_line()
+        loop do
+            clear_line(0, 0)
             puts("#{@title}#{COLORS[RESET]}")
 
             @menu_options.each_with_index do |menu_option, index|
-                move_cursor_to(0, index+2)
-                clear_line
+                clear_line(index + 2, 0)
                 puts("#{COLORS[CYAN] unless menu_option_chosen != index}" + menu_option.description + "#{COLORS[RESET]}")
             end
 
-            move_cursor_to(0, @menu_options.length+3)
-            clear_line
+            clear_line(@menu_options.length + 3, 0)
             puts "#{@details}#{COLORS[RESET]}"
 
             user_input = STDIN.getch
@@ -51,11 +48,8 @@ class Menu
 
     private 
 
-    def move_cursor_to(x, y)
-      print "\e[#{y};#{x}H"
-    end
-    
-    def clear_line
-      print "\e[2K"
+    def clear_line(x, y)
+        print "\e[#{x};#{y}H"
+        print "\e[2K"
     end
 end

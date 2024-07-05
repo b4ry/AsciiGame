@@ -84,8 +84,7 @@ class Map
     private 
 
     def draw_object_vision_map(current_object)
-        # move cursor to the top-left corner
-        print "\e[H"
+        move_cursor_to(0, 0)
 
         current_object_row = current_object.get_position.row
         current_object_col = current_object.get_position.col
@@ -139,23 +138,22 @@ class Map
             print "\n"
         end
 
-        print "\e[#{fov_row_max+2};0H"
+        move_cursor_to(fov_row_max + 2, 0)
         print "\e[2K"
 
         cursor_col = current_object_col <= 4 ? (current_object_fov_col_max+2)*2 : 24
 
         0.upto(fov_row_max) do |row|
-            print "\e[#{row+1};#{cursor_col}H"
+            move_cursor_to(row + 1, cursor_col)
             print "  "
         end
 
-        # move cursor to the top-left corner
-        print "\e[H"
-        print "\e[0;30H"
+        move_cursor_to(0, 30)
+        print "\e[0K"
         puts("| Current coordinates: x - #{current_object_row}, y - #{current_object_col}, fov (field of vision) - #{current_object_fov}")
         
         5.times do |row|
-            print "\e[#{row+1};30H"
+            move_cursor_to(row + 1, 30)
             puts("|")
         end
     end
@@ -169,6 +167,10 @@ class Map
             position = value.get_position
             @map[position.row][position.col] = value.to_s
         end
+    end
+
+    def move_cursor_to(x, y)
+        print "\e[#{x};#{y}H"
     end
 
     def clear_screen
