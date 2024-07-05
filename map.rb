@@ -11,38 +11,40 @@ class Map
 
         @map = Array.new(@rows) { Array.new(@columns) }
 
-        # perlin_noise = PerlinNoise.new()
-        # rand_amp = rand() * 0.15 + 0.95
-        # rand_freq = rand() * 0.006 + 0.006
-        # rand_seed = rand(-10000..1000)
+        perlin_noise = PerlinNoise.new()
+        rand_amp = rand() * 0.15 + 0.95
+        rand_freq = rand() * 0.006 + 0.006
+        rand_seed = rand(-10000..1000)
 
-        # perlin_noise.generate_fbm_perlin_noise(@map, rand_amp, rand_freq, 8, rand_seed)
+        perlin_noise.generate_fbm_perlin_noise(@map, rand_amp, rand_freq, 8, rand_seed)
 
-        # @map.each_with_index do |row, i|
-        #     @map.each_with_index do |col, j|
-        #         if(@map[i][j]) < -0.24
-        #             @map[i][j] = "\e[48;5;18m.#{COLORS[RESET]}" # deep water
-        #         elsif(@map[i][j]) < 0.07
-        #             @map[i][j] = "\e[44m.#{COLORS[RESET]}" # water
-        #         elsif(@map[i][j]) < 0.1
-        #             @map[i][j] = "\e[43m.#{COLORS[RESET]}" # shore
-        #         elsif(@map[i][j]) < 0.15
-        #             @map[i][j] = "\e[42m.#{COLORS[RESET]}" # marsh
-        #         elsif(@map[i][j]) < 0.30
-        #             @map[i][j] = "\e[48;5;70m.#{COLORS[RESET]}" # grass
-        #         elsif(@map[i][j]) < 0.42
-        #             @map[i][j] = "\e[48;5;94m.#{COLORS[RESET]}" # hills
-        #         elsif(@map[i][j]) < 0.55
-        #             @map[i][j] = "\e[47m.#{COLORS[RESET]}" # mountains
-        #         else
-        #             @map[i][j] = "\e[48;5;235m.#{COLORS[RESET]}" # summit
-        #         end
+        @map.each_with_index do |row, i|
+            row.each_with_index do |col, j|
+                if(@map[i][j]) < -0.24
+                    @map[i][j] = "#{COLORS[DARK_BLUE]} .#{COLORS[RESET]}" # deep water
+                elsif(@map[i][j]) < 0.07
+                    @map[i][j] = "#{COLORS[BLUE]} .#{COLORS[RESET]}" # water
+                elsif(@map[i][j]) < 0.1
+                    @map[i][j] = "#{COLORS[YELLOW]} .#{COLORS[RESET]}" # shore
+                elsif(@map[i][j]) < 0.15
+                    @map[i][j] = "#{COLORS[LIGHT_GREEN]} .#{COLORS[RESET]}" # marsh
+                elsif(@map[i][j]) < 0.30
+                    @map[i][j] = "#{COLORS[GREEN]} .#{COLORS[RESET]}" # grass
+                elsif(@map[i][j]) < 0.42
+                    @map[i][j] = "#{COLORS[BROWN]} .#{COLORS[RESET]}" # hills
+                elsif(@map[i][j]) < 0.55
+                    @map[i][j] = "#{COLORS[WHITE]} .#{COLORS[RESET]}" # mountains
+                else
+                    @map[i][j] = "#{COLORS[BLACK]} .#{COLORS[RESET]}" # summit
+                end
 
-        #         print (@map[i][j])
-        #     end
+                without_space = @map[i][j].sub(" .", ".")
 
-        #     puts
-        # end
+                print (without_space)
+            end
+
+            puts
+        end
         
         @map_objects = {}
 
@@ -67,7 +69,7 @@ class Map
         clear_screen()
         print("\n")
 
-        reset_map()
+        # reset_map()
         place_objects()
         draw_object_vision_map(current_object)
     end
@@ -124,7 +126,7 @@ class Map
                 if(!(all_line_segments_cross(line_segment_crosses)))
                     print @map[row][col]
                 else
-                    print " "
+                    print "  "
                 end
             end
 

@@ -24,6 +24,6 @@ class Player < GameObject
     end
 
     def to_s
-        return "#{GameOptions.get_player_color}#{GameOptions.get_player_icon}#{COLORS[RESET]}"
+        return "#{GameOptions.get_player_color} #{GameOptions.get_player_icon}#{COLORS[RESET]}"
     end  
 end
