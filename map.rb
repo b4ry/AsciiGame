@@ -48,6 +48,7 @@ class Map
             puts
         end
 
+        clear_screen()
         @map_objects = {}
 
         for x in 0..@rows-1 do
@@ -68,9 +69,6 @@ class Map
     end
 
     def draw_map(current_object)
-        clear_screen()
-        print("\n")
-
         place_objects()
         draw_object_vision_map(current_object)
     end
@@ -86,6 +84,9 @@ class Map
     private 
 
     def draw_object_vision_map(current_object)
+        # move cursor to the top-left corner
+        print "\e[H"
+
         current_object_row = current_object.get_position.row
         current_object_col = current_object.get_position.col
         current_object_fov = current_object.get_fov
@@ -138,8 +139,25 @@ class Map
             print "\n"
         end
 
-        print "\n"
-        puts("Current coordinates: x - #{current_object_row}, y - #{current_object_col}, fov (field of vision) - #{current_object_fov}")
+        print "\e[#{fov_row_max+2};0H"
+        print "\e[2K"
+
+        cursor_col = current_object_col <= 4 ? (current_object_fov_col_max+2)*2 : 24
+
+        0.upto(fov_row_max) do |row|
+            print "\e[#{row+1};#{cursor_col}H"
+            print "  "
+        end
+
+        # move cursor to the top-left corner
+        print "\e[H"
+        print "\e[0;30H"
+        puts("| Current coordinates: x - #{current_object_row}, y - #{current_object_col}, fov (field of vision) - #{current_object_fov}")
+        
+        5.times do |row|
+            print "\e[#{row+1};30H"
+            puts("|")
+        end
     end
 
     def all_line_segments_cross(crosses)
