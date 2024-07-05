@@ -7,8 +7,8 @@ class Map
     attr_accessor :map_objects
            
     def initialize()
-        @columns = 10
-        @rows = 10
+        @columns = 100
+        @rows = 100
 
         @map = Array.new(@rows) { Array.new(@columns) }
         @unaltered_map = Array.new(@rows) { Array.new(@columns) }
@@ -124,7 +124,7 @@ class Map
         fov_col_min = current_object_fov_col_min < 0 ? 0 : current_object_fov_col_min;
         fov_col_max = current_object_fov_col_max < @columns ? current_object_fov_col_max : @columns-1;
 
-        for row in fov_row_min..fov_row_max do       
+        for row in fov_row_min..fov_row_max do   
             for col in fov_col_min..fov_col_max do
                 # a line between current object and the current cell
                 current_object_cell_center = [current_object_row + 0.5, current_object_col + 0.5]
@@ -162,12 +162,28 @@ class Map
             print "\n"
         end
 
-        TerminalHelper.clear_line(fov_row_max + 2, 0)
+        hide_map_outside_fov(current_object_fov, fov_row_max, fov_col_max, current_object_row, current_object_col)
 
-        cursor_col = current_object_col <= 4 ? (current_object_fov_col_max + 2) * 2 : 24
+        TerminalHelper.go_to(0, 30)
+        puts("| Current coordinates: x - #{current_object_row}, y - #{current_object_col}, fov (field of vision) - #{current_object_fov} ")
+        
+        5.times do |row|
+            TerminalHelper.go_to(row + 1, 30)
+            puts("|")
+        end
+    end
 
-        if((@columns - 1) == fov_col_max)
-            cursor_col = current_object_fov * 2 + 4 + (@columns - 1 - current_object_col) * 2 # + 4 because player and a border. They are DOUBLED, because of " " in when rendering, eg " @"
+    def hide_map_outside_fov(current_object_fov, fov_row_max, fov_col_max, current_object_row, current_object_col)
+      cursor_col = current_object_fov * 2 + 4
+
+        if((current_object_col - 0) >= current_object_fov)
+            cursor_col += current_object_fov * 2 # when the object is further from the left vertical edge by its fov, then just add the fov
+        else
+            cursor_col += (current_object_col - 0) * 2 # when the object can see the left vertical edge, then add the difference between the object's position and the edge
+        end
+
+        if((@columns - 1) == fov_col_max) # when the object can see the right vertical edge
+            cursor_col -= (current_object_fov - (fov_col_max - current_object_col)) * 2 # remove the distance between the edge and the object from the object's fov
         end
 
         0.upto(fov_row_max) do |row|
@@ -182,14 +198,6 @@ class Map
                 TerminalHelper.go_to(cursor_row, col + 1)
                 print "  "
             end
-        end
-
-        TerminalHelper.go_to(0, 30)
-        puts("| Current coordinates: x - #{current_object_row}, y - #{current_object_col}, fov (field of vision) - #{current_object_fov} ")
-        
-        5.times do |row|
-            TerminalHelper.go_to(row + 1, 30)
-            puts("|")
         end
     end
 
