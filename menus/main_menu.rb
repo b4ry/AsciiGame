@@ -31,7 +31,7 @@ class MainMenu < Menu
         system(CLEAR_SCREEN)
     
         map = Map.new()
-        action_processor = ActionProcessor.new(map.map_objects)
+        action_processor = ActionProcessor.new(map)
         
         player = Player.new()
         map.add_map_object(player)

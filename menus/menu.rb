@@ -12,7 +12,7 @@ class Menu
 
         while(true)
             move_cursor_to(0, 0)
-            clear_line
+            clear_line()
             puts("#{@title}#{COLORS[RESET]}")
 
             @menu_options.each_with_index do |menu_option, index|

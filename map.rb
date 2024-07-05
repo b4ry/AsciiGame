@@ -10,6 +10,7 @@ class Map
         @rows = 225
 
         @map = Array.new(@rows) { Array.new(@columns) }
+        @unaltered_map = Array.new(@rows) { Array.new(@columns) }
 
         perlin_noise = PerlinNoise.new()
         rand_amp = rand() * 0.15 + 0.95
@@ -38,14 +39,15 @@ class Map
                     @map[i][j] = "#{COLORS[BLACK]} .#{COLORS[RESET]}" # summit
                 end
 
-                without_space = @map[i][j].sub(" .", ".")
+                @unaltered_map[i][j] = @map[i][j]
 
+                without_space = @map[i][j].sub(" .", ".")
                 print (without_space)
             end
 
             puts
         end
-        
+
         @map_objects = {}
 
         for x in 0..@rows-1 do
@@ -69,13 +71,16 @@ class Map
         clear_screen()
         print("\n")
 
-        # reset_map()
         place_objects()
         draw_object_vision_map(current_object)
     end
 
     def add_map_object(obj)
         @map_objects[obj.get_id] = obj
+    end
+
+    def refresh_previous(row, col) 
+        @map[row][col] = @unaltered_map[row][col]
     end
     
     private 
@@ -95,7 +100,7 @@ class Map
         fov_col_min = current_object_fov_col_min < 0 ? 0 : current_object_fov_col_min;
         fov_col_max = current_object_fov_col_max < @columns ? current_object_fov_col_max : @columns-1;
 
-        for row in fov_row_min..fov_row_max do
+        for row in fov_row_min..fov_row_max do       
             for col in fov_col_min..fov_col_max do
                 # a line between current object and the current cell
                 current_object_cell_center = [current_object_row + 0.5, current_object_col + 0.5]
@@ -139,10 +144,6 @@ class Map
 
     def all_line_segments_cross(crosses)
         return crosses[0] && crosses[1] && crosses[2] && crosses[3]
-    end
-
-    def reset_map
-        @map = Array.new(@rows) { Array.new(@columns, ".") }
     end
 
     def place_objects
