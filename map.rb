@@ -9,6 +9,7 @@ class Map
     def initialize()
         @columns = 100
         @rows = 100
+        @row_offset = 0
 
         @map = Array.new(@rows) { Array.new(@columns) }
         @unaltered_map = Array.new(@rows) { Array.new(@columns) }
@@ -108,7 +109,7 @@ class Map
     end
 
     def draw_object_vision_map(current_object)
-        TerminalHelper.go_to(0, 0)
+        TerminalHelper.go_to(@row_offset, 0)
 
         current_object_row = current_object.get_position.row
         current_object_col = current_object.get_position.col
@@ -162,28 +163,28 @@ class Map
             print "\n"
         end
 
-        hide_map_outside_fov(current_object_fov, fov_row_max, fov_col_max, current_object_row, current_object_col)
+        hide_map_outside_fov(current_object_fov, fov_row_min, fov_row_max, fov_col_max, current_object_row, current_object_col)
 
-        TerminalHelper.go_to(0, 30)
-        puts("| Current coordinates: x - #{current_object_row}, y - #{current_object_col}, fov (field of vision) - #{current_object_fov} ")
+        # TerminalHelper.go_to(0, 30)
+        # puts("| Current coordinates: x - #{current_object_row}, y - #{current_object_col}, fov (field of vision) - #{current_object_fov} ")
         
-        5.times do |row|
-            TerminalHelper.go_to(row + 1, 30)
-            puts("|")
-        end
+        # 5.times do |row|
+        #     TerminalHelper.go_to(row + 1, 30)
+        #     puts("|")
+        # end
     end
 
-    def hide_map_outside_fov(current_object_fov, fov_row_max, fov_col_max, current_object_row, current_object_col)
-      cursor_col = current_object_fov * 2 + 4
+    def hide_map_outside_fov(current_object_fov, fov_row_min, fov_row_max, fov_col_max, current_object_row, current_object_col)
+        cursor_col = current_object_fov * 2 + 4
 
-        if((current_object_col - 0) >= current_object_fov)
-            cursor_col += current_object_fov * 2 # when the object is further from the left vertical edge by its fov, then just add the fov
-        else
-            cursor_col += (current_object_col - 0) * 2 # when the object can see the left vertical edge, then add the difference between the object's position and the edge
+        if((current_object_col - 0) >= current_object_fov) # when the object is further from the left vertical edge by its fov
+            cursor_col += current_object_fov * 2 # then just add the fov
+        else # when the object can see the left vertical edge,
+            cursor_col += (current_object_col - 0) * 2 # then add the difference between the object's position and the edge
         end
 
         if((@columns - 1) == fov_col_max) # when the object can see the right vertical edge
-            cursor_col -= (current_object_fov - (fov_col_max - current_object_col)) * 2 # remove the distance between the edge and the object from the object's fov
+            cursor_col -= (current_object_fov + current_object_col - fov_col_max) * 2 # remove the distance between the edge and the object from the object's fov
         end
 
         0.upto(fov_row_max) do |row|
@@ -191,13 +192,21 @@ class Map
             print "  "
         end
 
-        if((@rows - 1) == fov_row_max)
-            cursor_row = current_object_fov + 2 + (@rows - 1 - current_object_row) # rows are not DOUBLED so no need for * 2
+        cursor_row = (@row_offset + 1) + 1 + current_object_fov # rows are not DOUBLED so no need for * 2
 
-            0.upto(cursor_col) do |col|
-                TerminalHelper.go_to(cursor_row, col + 1)
-                print "  "
-            end
+        if(fov_row_min == @row_offset) # when the object can see the top edge
+            cursor_row += (current_object_row - @row_offset) # add the difference from the edge
+        else
+            cursor_row += current_object_fov # add the fov
+        end
+
+        if((@rows - 1) == fov_row_max) # when the object can see the bottom edge
+            cursor_row -= (current_object_fov + current_object_row - fov_row_max) # remove the distance between the edge and the object from the object's fov
+        end
+
+        0.upto(cursor_col) do |col|
+            TerminalHelper.go_to(cursor_row, col + 1)
+            print "  "
         end
     end
 
