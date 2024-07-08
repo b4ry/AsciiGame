@@ -9,7 +9,6 @@ class Map
     def initialize()
         @columns = 100
         @rows = 100
-        @row_offset = 0
 
         @map = Array.new(@rows) { Array.new(@columns) }
         @unaltered_map = Array.new(@rows) { Array.new(@columns) }
@@ -109,7 +108,7 @@ class Map
     end
 
     def draw_object_vision_map(current_object)
-        TerminalHelper.go_to(@row_offset, 0)
+        TerminalHelper.go_to(0, 0)
 
         current_object_row = current_object.get_position.row
         current_object_col = current_object.get_position.col
@@ -192,10 +191,10 @@ class Map
             print "  "
         end
 
-        cursor_row = (@row_offset + 1) + 1 + current_object_fov # rows are not DOUBLED so no need for * 2
+        cursor_row = 1 + 1 + current_object_fov # rows are not DOUBLED so no need for * 2
 
-        if(fov_row_min == @row_offset) # when the object can see the top edge
-            cursor_row += (current_object_row - @row_offset) # add the difference from the edge
+        if(fov_row_min == 0) # when the object can see the top edge
+            cursor_row += (current_object_row - 0) # add the difference from the edge
         else
             cursor_row += current_object_fov # add the fov
         end
