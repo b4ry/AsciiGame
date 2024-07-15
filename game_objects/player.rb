@@ -8,7 +8,7 @@ class Player < GameObject
     def initialize
         super(false)
         @position = Position.new(rand(1..1), rand(1..1))
-        @fov = 10
+        @fov = 5
     end
 
     def get_position

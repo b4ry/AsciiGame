@@ -126,36 +126,10 @@ class Map
 
         for row in fov_row_min..fov_row_max do   
             for col in fov_col_min..fov_col_max do
-                # a line between current object and the current cell
-                current_object_cell_center = [current_object_row + 0.5, current_object_col + 0.5]
-                line_segment_top = LineSegment.new(row, col + 0.5, current_object_cell_center[0], current_object_cell_center[1])
-                line_segment_bottom = LineSegment.new(row + 1, col + 0.5, current_object_cell_center[0], current_object_cell_center[1])
-                line_segment_left = LineSegment.new(row + 0.5, col, current_object_cell_center[0], current_object_cell_center[1])
-                line_segment_right = LineSegment.new(row + 0.5, col + 1, current_object_cell_center[0], current_object_cell_center[1])
-
-                # if any of the line segment edge is obstructed
-                line_segment_crosses = [false, false, false, false]
-                
-                # checks intersection with all obstructing map objects
-                obstructing_objects = @map_objects.select { |key, value| value.obstructs? && (value.get_position.row != row || value.get_position.col != col) }
-
-                obstructing_objects.each do |key, value|
-                    obstructing_object = value.get_position
-                    
-                    line_segment_crosses[0] |= line_segment_top.line_crosses_grid?(obstructing_object.row, obstructing_object.col, 1)
-                    line_segment_crosses[1] |= line_segment_bottom.line_crosses_grid?(obstructing_object.row, obstructing_object.col, 1)
-                    line_segment_crosses[2] |= line_segment_left.line_crosses_grid?(obstructing_object.row, obstructing_object.col, 1)
-                    line_segment_crosses[3] |= line_segment_right.line_crosses_grid?(obstructing_object.row, obstructing_object.col, 1)
-
-                    if(all_line_segments_cross(line_segment_crosses))
-                        break
-                    end
-                end
-
-                if(!(all_line_segments_cross(line_segment_crosses)))
-                    print @map[row][col]
-                else
+                if(!(row == current_object_row && col == current_object_col) && obstructed?(row, col, current_object_row, current_object_col))
                     print "  "
+                else
+                    print @map[row][col]
                 end
             end
 
@@ -164,13 +138,97 @@ class Map
 
         hide_map_outside_fov(current_object_fov, fov_row_min, fov_row_max, fov_col_max, current_object_row, current_object_col)
 
-        # TerminalHelper.go_to(0, 30)
-        # puts("| Current coordinates: x - #{current_object_row}, y - #{current_object_col}, fov (field of vision) - #{current_object_fov} ")
+        TerminalHelper.go_to(0, 30)
+        puts("| Current coordinates: x - #{current_object_row}, y - #{current_object_col}, fov (field of vision) - #{current_object_fov} ")
         
-        # 5.times do |row|
-        #     TerminalHelper.go_to(row + 1, 30)
-        #     puts("|")
-        # end
+        5.times do |row|
+            TerminalHelper.go_to(row + 1, 30)
+            puts("|")
+        end
+    end
+
+    def obstructed?(row, col, current_object_row, current_object_col)
+        current_object_cell_center = [current_object_row + 0.5, current_object_col + 0.5]
+
+        line_segment_top = LineSegment.new(row, col + 0.5, current_object_cell_center[0], current_object_cell_center[1])
+        line_segment_bottom = LineSegment.new(row + 1, col + 0.5, current_object_cell_center[0], current_object_cell_center[1])
+        line_segment_left = LineSegment.new(row + 0.5, col, current_object_cell_center[0], current_object_cell_center[1])
+        line_segment_right = LineSegment.new(row + 0.5, col + 1, current_object_cell_center[0], current_object_cell_center[1])
+
+        obstructing_in_between_objects = @map_objects.select { |key, value| is_object_in_between_and_obstructing?(value, row, col, current_object_row, current_object_col) }
+        
+        line_segment_crosses = [false, false, false, false]
+        
+        obstructing_in_between_objects.each do |key, value|
+            obstructing_object = value.get_position
+            
+            case
+            when current_object_col == col
+                if current_object_row < row
+                    line_segment_crosses[0] |= line_segment_top.line_crosses_grid?(obstructing_object.row, obstructing_object.col, 1)
+                    line_segment_crosses[1] = true
+                    line_segment_crosses[2] = true
+                    line_segment_crosses[3] = true
+                else
+                    line_segment_crosses[0] = true
+                    line_segment_crosses[1] |= line_segment_bottom.line_crosses_grid?(obstructing_object.row, obstructing_object.col, 1)
+                    line_segment_crosses[2] = true
+                    line_segment_crosses[3] = true
+                end
+            when current_object_col < col
+                if current_object_row < row
+                    line_segment_crosses[0] |= line_segment_top.line_crosses_grid?(obstructing_object.row, obstructing_object.col, 1)
+                    line_segment_crosses[1] = true
+                    line_segment_crosses[2] |= line_segment_left.line_crosses_grid?(obstructing_object.row, obstructing_object.col, 1)
+                    line_segment_crosses[3] = true
+                elsif current_object_row > row
+                    line_segment_crosses[0] = true
+                    line_segment_crosses[1] |= line_segment_bottom.line_crosses_grid?(obstructing_object.row, obstructing_object.col, 1)
+                    line_segment_crosses[2] |= line_segment_left.line_crosses_grid?(obstructing_object.row, obstructing_object.col, 1)
+                    line_segment_crosses[3] = true
+                else
+                    line_segment_crosses[0] = true
+                    line_segment_crosses[1] = true
+                    line_segment_crosses[2] |= line_segment_left.line_crosses_grid?(obstructing_object.row, obstructing_object.col, 1)
+                    line_segment_crosses[3] = true
+                end
+            when current_object_col > col
+                if current_object_row < row
+                    line_segment_crosses[0] |= line_segment_top.line_crosses_grid?(obstructing_object.row, obstructing_object.col, 1)
+                    line_segment_crosses[1] = true
+                    line_segment_crosses[2] = true
+                    line_segment_crosses[3] |= line_segment_right.line_crosses_grid?(obstructing_object.row, obstructing_object.col, 1)
+                elsif current_object_row > row
+                    line_segment_crosses[0] = true
+                    line_segment_crosses[1] |= line_segment_bottom.line_crosses_grid?(obstructing_object.row, obstructing_object.col, 1)
+                    line_segment_crosses[2] = true
+                    line_segment_crosses[3] |= line_segment_right.line_crosses_grid?(obstructing_object.row, obstructing_object.col, 1)
+                else
+                    line_segment_crosses[0] = true
+                    line_segment_crosses[1] = true
+                    line_segment_crosses[2] = true
+                    line_segment_crosses[3] |= line_segment_right.line_crosses_grid?(obstructing_object.row, obstructing_object.col, 1)
+                end
+            end            
+
+            if(all_line_segments_cross?(line_segment_crosses))
+                return true
+            end
+        end
+
+        return false
+    end
+
+    def is_object_in_between_and_obstructing?(value, row, col, current_object_row, current_object_col)
+        min_row, max_row = [current_object_row, row].minmax
+        min_col, max_col = [current_object_col, col].minmax
+
+        return value.obstructs? && 
+            (
+                (value.get_position.row != row || value.get_position.col != col) &&
+                (value.get_position.row.between?(min_row, max_row)) &&
+                (value.get_position.col.between?(min_col, max_col))
+            )
     end
 
     def hide_map_outside_fov(current_object_fov, fov_row_min, fov_row_max, fov_col_max, current_object_row, current_object_col)
@@ -209,7 +267,7 @@ class Map
         end
     end
 
-    def all_line_segments_cross(crosses)
+    def all_line_segments_cross?(crosses)
         return crosses[0] && crosses[1] && crosses[2] && crosses[3]
     end
 
