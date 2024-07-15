@@ -8,6 +8,7 @@ WHITE = "WHITE"
 DARK_BLUE = "DARK_BLUE"
 LIGHT_GREEN = "LIGHT_GREEN"
 BROWN = "BROWN"
+GRAY = "GRAY"
 RESET = "RESET"
 
 COLORS = {
@@ -21,6 +22,7 @@ COLORS = {
     DARK_BLUE => "\e[38;5;18m",
     GREEN => "\e[38;5;70m",
     BROWN => "\e[38;5;94m",
+    GRAY => "\e[38;5;8m",
     RESET => "\e[0m"
 }
 
