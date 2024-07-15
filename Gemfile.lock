@@ -5,7 +5,7 @@ GEM
       irb (~> 1.10)
       reline (>= 0.3.8)
     io-console (0.7.2)
-    irb (1.13.2)
+    irb (1.14.0)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
     language_server-protocol (3.17.0.3)
@@ -13,18 +13,18 @@ GEM
     prism (0.30.0)
     psych (5.1.2)
       stringio
-    rbs (3.5.1)
+    rbs (3.5.2)
       logger
     rdoc (6.7.0)
       psych (>= 4.0.0)
     reline (0.5.9)
       io-console (~> 0.5)
-    ruby-lsp (0.17.4)
+    ruby-lsp (0.17.7)
       language_server-protocol (~> 3.17.0)
       prism (>= 0.29.0, < 0.31)
       rbs (>= 3, < 4)
       sorbet-runtime (>= 0.5.10782)
-    sorbet-runtime (0.5.11460)
+    sorbet-runtime (0.5.11481)
     stringio (3.1.1)
 
 PLATFORMS
